@@ -26,7 +26,7 @@ def test_missing_file():
     
         assert response.status_code == 422
 
-"""
+
 def test_invalid_type():
     with open("00999_lr.txt", "rb") as file:
 
@@ -36,7 +36,7 @@ def test_invalid_type():
         })
     
         assert response.status_code == (500)
-"""
+
 def test_health():
     response = client.get("/health")
     assert response.status_code == (200)
