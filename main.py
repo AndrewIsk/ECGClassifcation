@@ -5,6 +5,7 @@ import os
 import tempfile
 import torch
 from torch import nn
+from fastapi import HTTPException
 #from ECG_Thing import model
 
 
@@ -48,7 +49,12 @@ def create_file(file: Annotated[bytes, File()]):
 
 @app.post("/uploadfile/")
 async def create_upload_file(datFile: UploadFile, heaFile: UploadFile):
- with tempfile.TemporaryDirectory() as tmpdir:
+  if not datFile.filename.endswith(".dat"):
+    raise HTTPException(status_code=400, detail="datFile must be a .dat file")
+  if not heaFile.filename.endswith(".hea"):
+    raise HTTPException(status_code=400, detail="heaFile must be a .hea file")
+
+  with tempfile.TemporaryDirectory() as tmpdir:
     # WFDB requires matching base filenames, e.g. "record100.dat" + "record100.hea"
     recordName = os.path.splitext(datFile.filename)[0]
 
