@@ -6,4 +6,4 @@ WORKDIR /app
 
 RUN pip install -r requirements.txt
 
-CMD fastapi main.py
+CMD exec uvicorn main:app --host 0.0.0.0 --port ${PORT:-8080}
